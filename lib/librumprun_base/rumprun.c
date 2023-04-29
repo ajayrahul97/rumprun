@@ -106,7 +106,7 @@ rumprun_boot(struct rumprun_boot_config *config)
 	int rv, x;
 
 	rump_boot_setsigmodel(RUMP_SIGMODEL_IGNORE);
-	rump_init();
+	rump_init(NULL);
 
 	/* mount /tmp before we let any userspace bits run */
 	rump_sys_mount(MOUNT_TMPFS, "/tmp", 0, &ta, sizeof(ta));

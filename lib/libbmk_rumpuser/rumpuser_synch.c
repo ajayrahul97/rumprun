@@ -142,6 +142,12 @@ rumpuser_mutex_init(struct rumpuser_mtx **mtxp, int flags)
 	*mtxp = mtx;
 }
 
+int
+rumpuser_mutex_spin_p(struct rumpuser_mtx *mtx)
+{
+	return (mtx->flags & RUMPUSER_MTX_SPIN) != 0;
+}
+
 void
 rumpuser_mutex_enter(struct rumpuser_mtx *mtx)
 {
