@@ -1,0 +1,27 @@
+diff --git a/buildrump.sh b/buildrump.sh
+index e5f3a93..025cfa3 100755
+--- a/buildrump.sh
++++ b/buildrump.sh
+@@ -783,17 +783,22 @@ makebuild ()
+        [ -d ${SRCDIR}/sys/rump/share ] \
+            && appendvar DIRS_second ${SRCDIR}/sys/rump/share
+
+-       if [ ${MACHINE} = "i386" -o ${MACHINE} = "amd64" \
++       if [ ${MACHINE} = "i386" -o ${MACHINE} = "amd64" -o ${MACHINE} = "evbarm64-el"\
+             -o ${MACHINE#evbearm} != ${MACHINE} \
+             -o ${MACHINE#evbppc} != ${MACHINE} ]; then
++               :'
+                DIRS_emul=sys/rump/kern/lib/libsys_linux
++               '
++               DIRS_emul=
+        fi
++
+        ${SYS_SUNOS} && appendvar DIRS_emul sys/rump/kern/lib/libsys_sunos
+        if ${HIJACK}; then
+                DIRS_final="lib/librumphijack"
+        else
+                DIRS_final=
+        fi
++
+
+        DIRS_third="${DIRS_third} ${DIRS_emul}"

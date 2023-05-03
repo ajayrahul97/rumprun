@@ -42,6 +42,13 @@ elseif(KernelArchARM)
         set(rumprun_tool_prefix "arm--netbsdelf-eabi")
         # Suppress warnings that would otherwise stop the compilation
         list(APPEND RUMPKERNEL_FLAGS -F CWARNFLAGS=-w)
+    else()
+	set(rumprun_arch "aarch64")
+	set(rumprun_sel4_arch "aarch64")
+	set(rumprun_tuple "aarch64-rumprun-netbsd")
+	set(rumprun_tool_prefix "aarch64-netbsd")
+	# Suppress warnings that would otherwise stop the compilation
+	list(APPEND RUMPKERNEL_FLAGS -F CWARNFLAGS=-w)
     endif()
     # Append -march flag to ensure Rump is built properly for the specific CPU arch
     list(APPEND RUMPKERNEL_FLAGS -F ACFLAGS='-march=${KernelArmArmV}')
