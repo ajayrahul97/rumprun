@@ -26,25 +26,45 @@
 #include <bmk-core/arm/asm.h>
 
 ENTRY(bmk_cpu_sched_bouncer)
-	pop {r1, r0}			/* pop function and argument */
-	mov lr, pc
-	bx r1
-	bl bmk_sched_exit
+// Pop the function and argument from the stack.
+    mov  sp, x29
+    ldp x0, x6, [sp], #16
+    mov x30, lr
+    br x6			// branch to the function address
+    bl bmk_sched_exit		// call
 END(bmk_cpu_sched_bouncer)
 
-/*
- * r0 = previous thread
- * r1 = new thread
- */
-ENTRY(bmk_cpu_sched_switch)
-	push {r4-r12,r14}		/* save non-scratch regs except sp+pc */
-	str sp, [r0, #0]		/* save sp */
-	ldr sp, [r1, #0]		/* restore sp */
-	adr r2, 1f			/* save pc */
-	str r2, [r0, #8]
-	ldr pc, [r1, #8]		/* restore pc */
 
+/*
+ * x0 = previous thread
+ * x1 = new thread
+ */
+
+ENTRY(bmk_cpu_sched_switch)
+        stp x19, x20, [sp, #-16]!     // save non-scratch registers
+        stp x21, x22, [sp, #-16]!
+        stp x23, x24, [sp, #-16]!
+        stp x25, x26, [sp, #-16]!
+        stp x27, x28, [sp, #-16]!
+        stp x29, x30, [sp, #-16]!     // save fp and lr
+	mov x29, sp	
+	str x29, [x0, #0]   // Save SP and LR of the current thread
+	ldr x29, [x1, #0]   // Load SP of the next thread
+	mov sp, x29
+	mov x19, x0     // Using temp register to save value of x0
+	mov x20, x1
+
+        adr x2, 1f                    // save pc
+        str x2, [x19, #8]
+        ldr x30, [x20, #8]             // restore pc
+        br x30
 1:
-	pop {r4-r12,r14}		/* restore registers */
-	bx lr
+        ldp x29, x30, [sp], #16       // restore fp and lr
+	ldp x27, x28, [sp], #16       // restore registers
+        ldp x25, x26, [sp], #16
+        ldp x23, x24, [sp], #16
+        ldp x21, x22, [sp], #16
+        ldp x19, x20, [sp], #16
+        ret
 END(bmk_cpu_sched_switch)
+

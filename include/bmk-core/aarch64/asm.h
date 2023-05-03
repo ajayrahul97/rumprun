@@ -23,10 +23,10 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _BMK_CORE_ARM_ASM_H_
-#define _BMK_CORE_ARM_ASM_H_
+#ifndef _BMK_CORE_AARCH64_ASM_H_
+#define _BMK_CORE_AARCH64_ASM_H_
 
 #define ENTRY(x)        .text; .globl x; .type x,%function; x:
 #define END(x)          .size x, . - x
 
-#endif /* _BMK_CORE_ARM_ASM_H_ */
+#endif /* _BMK_CORE_AARCH64_ASM_H_ */

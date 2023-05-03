@@ -20,6 +20,6 @@ git submodule init
 git submodule update "$@"
 
 # Apply submodule patches
-(cd src-netbsd && git am ../src-netbsd.patches/*)
+#(cd src-netbsd && git am ../src-netbsd.patches/*)
 (cd buildrump.sh && git am ../buildrump.sh.patches/*)
 touch .rumpstamp

@@ -27,7 +27,7 @@ ifeq (${MACHINE},evbarm)
 ARCHDIR=arm
 supported:= true
 endif
-ifeq (${MACHINE},aarch64)
+ifeq (${MACHINE},evbarm64-el)
 ARCHDIR=aarch64
 supported:= true
 endif

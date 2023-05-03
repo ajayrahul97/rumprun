@@ -58,7 +58,6 @@ wait(struct waithead *wh, bmk_time_t wakeup)
 	w.who = bmk_current;
 	w.onlist = 1;
 	TAILQ_INSERT_TAIL(wh, &w, entries);
-
 	bmk_sched_blockprepare_timeout(wakeup);
 	bmk_sched_block();
 
@@ -140,6 +139,12 @@ rumpuser_mutex_init(struct rumpuser_mtx **mtxp, int flags)
 	mtx->flags = flags;
 	TAILQ_INIT(&mtx->waiters);
 	*mtxp = mtx;
+}
+
+int
+rumpuser_mutex_spin_p(struct rumpuser_mtx *mtx)
+{
+	return (mtx->flags & RUMPUSER_MTX_SPIN) != 0;
 }
 
 void

@@ -23,12 +23,26 @@
  * SUCH DAMAGE.
  */
 
-#include <bmk-core/arm/asm.h>
+#include <bmk-core/aarch64/asm.h>
 
 /* Should use cp15 */
 
 ENTRY(__aeabi_read_tp)
-	ldr r0, =bmk_cpu_arm_curtcb
-	ldr r0, [r0]
-	bx lr
+	ldr x0, =bmk_cpu_arm_curtcb
+	ldr x0, [x0]
+	ret
 END(__aeabi_read_tp)
+/*
+ENTRY(__aeabi_read_tp)
+	adr x0, bmk_cpu_arm_curtcb
+	ldr x0, [x0 #:lo12:bmk_cpu_arm_curtcb]
+	ret
+END(__aeabi_read_tp)
+*/
+/*
+.global __aeabi_read_tp
+__aeabi_read_tp:
+	adrp x0, bmk_cpu_arm_curtcb
+	ldr  x0, [x0, #:lo12:bmk_cpu_arm_curtcb]
+	ret
+*/
