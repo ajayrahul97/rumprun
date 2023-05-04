@@ -20,5 +20,6 @@ git submodule init
 git submodule update "$@"
 
 # Apply submodule patches
+# we are not applying any net-bsd patches
 (cd buildrump.sh && git am ../buildrump.sh.patches/*)
 touch .rumpstamp
